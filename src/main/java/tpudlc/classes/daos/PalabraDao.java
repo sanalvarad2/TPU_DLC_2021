@@ -41,4 +41,26 @@ public class PalabraDao extends DaoEclipseLink<Palabra, Integer> {
         return maxId;
     }
     
+    @Override
+    public List<Palabra> bulkCreate(List<Palabra> list){
+        entityManager.getTransaction().begin();
+        StringBuilder sb = new StringBuilder();
+        String InsertQuery = "INSERT INTO palabras VALUES ";
+        sb.append(InsertQuery);
+        for(int i = 0; i<list.size(); i++) {
+           Palabra item = list.get(i);
+           sb.append(String.format("(%d, '%s', %d, %d),", item.getIdPalabra(), item.getPalabra(), item.getNr(), item.getMaxtf()));
+           
+           if( i %5000 == 0 || i== list.size()-1){
+               
+                String sql = sb.toString().substring(0, sb.length() - 1);
+                entityManager.createNativeQuery(sql).executeUpdate();
+                sb.delete(InsertQuery.length(), sb.length());
+           }
+        }
+        entityManager.getTransaction().commit();
+        return list;
+        
+    }
+    
 }

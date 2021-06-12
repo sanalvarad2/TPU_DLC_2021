@@ -143,8 +143,9 @@ public class Indexador {
                 moveToIndexados(doc);
                 cantIdx++;
             }
-            
+            persistirPalabras(vocabulario);
         }
+        
         System.out.println("----------------------------Proceso de indexación finalizado con éxito.");
         return cantIdx;
     }
@@ -165,23 +166,26 @@ public class Indexador {
     private void updatePalabras(HashMap<String, Palabra> vocabulario,
                                 HashMap<String, Posteo> posteos) {
         Collection<Posteo> colPost= posteos.values();
-        ArrayList<Posteo> arrayListPosteos = new ArrayList( colPost );
-        ArrayList<Palabra> arrayListPalabras = new ArrayList( vocabulario.size() );
-        for(Posteo posteo: arrayListPosteos) {
+        colPost.forEach(posteo -> {
             Palabra palabra = posteo.getPalabra();
             palabra.increaseNr();
-            if( posteo.getTf() > palabra.getMaxtf() ) {
+            if (posteo.getTf() > palabra.getMaxtf()) {
                 palabra.setMaxtf( posteo.getTf() );
             }
-            arrayListPalabras.add( palabra );
-        }
-        palabraDao.bulkUpdate(arrayListPalabras);
+        }); //palabraDao.bulkUpdate(arrayListPalabras);
     }
     
     private void persistirPosteos(HashMap<String, Posteo> posteos) {
         Collection<Posteo> values = posteos.values();
         ArrayList<Posteo> valuesList = new ArrayList<Posteo>(values);
         posteoDao.bulkCreate(valuesList);
+    }
+    
+    private void persistirPalabras(HashMap<String, Palabra> vocabulario){
+        Collection<Palabra> values = vocabulario.values();
+        ArrayList<Palabra> valuesList = new ArrayList<Palabra>(values);
+        palabraDao.bulkCreate(valuesList);
+    
     }
     
     private void moveToIndexados(File file) {
