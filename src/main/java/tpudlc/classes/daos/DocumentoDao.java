@@ -37,5 +37,11 @@ public class DocumentoDao extends DaoEclipseLink<Documento, Integer> {
         
         return maxId;
     }
+    
+    public Integer getCount(){
+        Integer resp;
+        resp = entityManager.createNamedQuery("Documento.findAll").getResultList().size();
+        return resp;
+    }
    
 }
