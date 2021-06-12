@@ -1,4 +1,4 @@
-package com.mycompany.buscador_tpi.resources;
+package com.mycompany.tpudlc.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

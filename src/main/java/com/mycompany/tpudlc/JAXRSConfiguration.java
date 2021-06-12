@@ -1,4 +1,4 @@
-package com.mycompany.buscador_tpi;
+package com.mycompany.tpudlc;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
