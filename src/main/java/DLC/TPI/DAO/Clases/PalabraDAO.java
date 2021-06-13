@@ -63,4 +63,11 @@ public class PalabraDAO extends DaoEclipseLink<Palabra, Integer> {
         
     }
     
+    public void deleteAll(){
+        entityManager.getTransaction().begin();
+        entityManager.createNativeQuery("DELETE FROM palabras").executeUpdate();
+        entityManager.getTransaction().commit();
+    }
+    
+    
 }
