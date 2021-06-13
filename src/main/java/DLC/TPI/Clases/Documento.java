@@ -10,7 +10,8 @@ import DLC.TPI.DAO.Commons.DALEntity;
             @NamedQuery(name = "Documento.findAll", query = "SELECT d FROM Documento d"),
             @NamedQuery(name = "Documento.findById", query = "SELECT d FROM Documento d WHERE d.idDocumento = :idDocumento"),
             @NamedQuery(name = "Documento.findByNombreArchivo", query = "SELECT d FROM Documento d WHERE d.nombreArchivo = :nombreArchivo"),
-            @NamedQuery(name = "Documento.findMaxId", query = "SELECT d FROM Documento d ORDER BY d.idDocumento DESC")
+            @NamedQuery(name = "Documento.findMaxId", query = "SELECT d FROM Documento d ORDER BY d.idDocumento DESC"),
+            @NamedQuery(name = "Documento.getCount", query = "SELECT COUNT(d) FROM Documento d")
         }
 )
 public class Documento implements DALEntity {

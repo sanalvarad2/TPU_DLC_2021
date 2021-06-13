@@ -182,6 +182,7 @@ public class Indexador {
     }
     
     private void persistirPalabras(HashMap<String, Palabra> vocabulario){
+        palabraDao.deleteAll();
         Collection<Palabra> values = vocabulario.values();
         ArrayList<Palabra> valuesList = new ArrayList<Palabra>(values);
         palabraDao.bulkCreate(valuesList);

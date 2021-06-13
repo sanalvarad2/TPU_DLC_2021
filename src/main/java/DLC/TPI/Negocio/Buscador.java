@@ -25,15 +25,15 @@ public class Buscador {
     @Inject private PalabraDAO palabraDao;
     @Inject private PosteoDAO posteoDao;
     
-    private final String directorioIndexados = Indexador.directorioIndexados;
+    //private final String directorioIndexados = Indexador.directorioIndexados;
     
     public List<Documento> buscar(String query) {
         
         /* Cálculo de la cantidad de documentos indexados para calcular
             el logaritmo más adelante.
         */
-        File fileDirectorioDocs = new File(directorioIndexados);
-        Integer N = fileDirectorioDocs.listFiles().length;
+        //File fileDirectorioDocs = new File(directorioIndexados);
+        Integer N = documentoDao.getCount();//fileDirectorioDocs.listFiles().length;
         
         // Inicializacion de la variable que contendrá la respuesta.
         List<Documento> resp = new ArrayList();
@@ -61,7 +61,11 @@ public class Buscador {
                 ArrayList<Posteo> posteos = new ArrayList( posteoDao.retrieveOrdered(10, pal) );
                 for(Posteo post: posteos){
                     
-                    Double puntaje = post.getTf() * Math.log10( N / pal.getNr() );
+                    Double denominador =  (double)pal.getNr().intValue();
+                    
+                    Double log = Math.log10( N/ denominador);
+                    
+                    Double puntaje = (Double) (post.getTf() * log) ;
                     
 
                     Documento doc = post.getDocumento();
