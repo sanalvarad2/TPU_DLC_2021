@@ -3,6 +3,7 @@
   <!-- Define Persistence Unit -->
   <persistence-unit name="tpudlc_persistencia" transaction-type="RESOURCE_LOCAL">
     <jta-data-source>dlcResourceLocal</jta-data-source>
+    <class>DLC.TPI.Clases.Archivo</class>
     <class>DLC.TPI.Clases.Documento</class>
     <class>DLC.TPI.Clases.Posteo</class>
     <class>DLC.TPI.Clases.Palabra</class>
