@@ -44,5 +44,10 @@ public class DocumentoDAO extends DAOEclipseLink<Documento, Integer> {
         resp = entityManager.createNamedQuery("Documento.findAll").getResultList().size();
         return resp;
     }
+    
+    @Override
+    public List<Documento> findAll(){
+        return entityManager.createNamedQuery("Documento.findAll").getResultList();
+    }
    
 }
