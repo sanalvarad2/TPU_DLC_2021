@@ -5,9 +5,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,186 +23,210 @@ import DLC.TPI.Utils.FileToBase64;
 public class Indexador {
 
     @Inject
-    private DocumentoDAO documentoDao;
+    private ArchivoDAO archivoDAO;
     @Inject
-    private PalabraDAO palabraDao;
+    private DocumentoDAO documentoDAO;
     @Inject
-    private PosteoDAO posteoDao;
+    private PalabraDAO palabraDAO;
     @Inject
-    private ArchivoDAO archivoDao;
+    private PosteoDAO posteoDAO;
 
     public static final String directorioDocumentos = "E:\\DocumentosTP1\\";
-    private int cantIdx;
+    private int cantidadArchivosIndexados;
 
     public int indexar() throws IOException {
 
-        cantIdx = 0;
-        File fileDirectorioDocs = new File(directorioDocumentos);
+        cantidadArchivosIndexados = 0;
+        File fileDirectorioDocumentoss = new File(directorioDocumentos);
 
-        File[] arrayDocumentos = fileDirectorioDocs.listFiles();
+        File[] arrayDocumentos = fileDirectorioDocumentoss.listFiles();
 
-        ArrayList<File> listaDocs = new ArrayList();
+        ArrayList<File> listaDocumentos = new ArrayList();
 
         for (int i = 0; i < arrayDocumentos.length; i++) {
             if (!arrayDocumentos[i].isDirectory()) {
-                listaDocs.add(arrayDocumentos[i]);
+                listaDocumentos.add(arrayDocumentos[i]);
             }
         }
 
-        Pattern p = Pattern.compile("[a-zA-Z]+");
+        Pattern patron = Pattern.compile("[a-zA-Z]+");
         Integer j = 0;
 
         /* Para poder hacer bulk inserts, es necesario asignar manualmente las
-            claves primarias, por lo que es necesario obtener el id más alto
-            de las palabras y de los posteos. Si la tabla está vacía, maxId()
-            devuelve 0.
+           claves primarias, por lo que es necesario obtener el id más alto
+           de las palabras y de los posteos. Si la tabla está vacía, maxId()
+           devuelve 0.
          */
-        Integer idPal = palabraDao.maxId() + 1;
-        Integer idPost = posteoDao.maxId() + 1;
-        Integer idDoc = documentoDao.maxId() + 1;
+        Integer idDocumento = documentoDAO.maxId() + 1;
+        Integer idPalabra = palabraDAO.maxId() + 1;
+        Integer idPosteo = posteoDAO.maxId() + 1;
 
-        if (listaDocs.size() > 0) {
-            HashMap<String, Palabra> vocabulario = iniciarVocabulario();
-            HashMap<String, Documento> documentos = iniciarDocumentos();
+        if (listaDocumentos.size() > 0) {
+            HashMap<String, Palabra> hashmapVocabulario = iniciarVocabulario();
+            HashMap<String, Documento> hashmapDocumentos = iniciarDocumentos();
+            
             System.out.println("Vocabulario inicializado con éxito.");
 
-            for (File doc : listaDocs) {
+            for (File d : listaDocumentos) {
+                
                 System.gc();
-
-                System.out.println("----------------------------------Doc: " + doc.getName());
-                Documento documento = documentos.get(doc.getName());
+                System.out.println("----------------------------------Doc: " + d.getName());
+                
+                Documento documento = hashmapDocumentos.get(d.getName());
+                
                 if (documento == null) {
-                    documento = new Documento(doc.getName());
-                    documento.setIdDocumento(idDoc);
-                    idDoc ++;
-                    documentos.put(doc.getName(), documento);
-                    
+                    documento = new Documento(d.getName());
+                    documento.setIdDocumento(idDocumento);
+                    idDocumento ++;
+                    hashmapDocumentos.put(d.getName(), documento);
 
                     /* TODAS las tablas hash y arrays  de los cuales se sabe que van
-                    a contener una cantidad muy grande de objetos, son
-                    inicializados con un tamaño exagerado, para evitar que sean
-                    necesarias las operaciones rehash y resize.
+                     * a contener una cantidad muy grande de objetos, son
+                     * inicializados con un tamaño exagerado, para evitar que sean
+                     * necesarias las operaciones rehash y resize.
                      */
-                    HashMap<String, Posteo> posteos = new HashMap(100000, 0.5f);
+                    HashMap<String, Posteo> hashmapPosteos = new HashMap(100000, 0.5f);
 
-                    ArrayList<Palabra> palsPendientesCreacion = new ArrayList(50000);
+                    ArrayList<Palabra> listaPalabrasPendientesCreacion = new ArrayList(50000);
 
-                    BufferedReader br = new BufferedReader(new FileReader(doc));
+                    BufferedReader lector = new BufferedReader(new FileReader(d));
                     String renglon;
                     String primerasLineas = "";
-                    int lineCount = 0;
-                    while ((renglon = br.readLine()) != null) {
+                    
+                    int contadorLineas = 0;
+                    
+                    while ((renglon = lector.readLine()) != null) {
 
-                        if (0 <= lineCount && lineCount <= 2) {
+                        if (0 <= contadorLineas && contadorLineas <= 2) {
                             primerasLineas += renglon + "- ";
                         }
 
-                        Matcher m = p.matcher(renglon);
+                        Matcher m = patron.matcher(renglon);
 
                         while (m.find()) {
 
-                            String pal = m.group().toLowerCase();
-
-                            Palabra palabra = vocabulario.get(pal);
+                            String p = m.group().toLowerCase();
+                            Palabra palabra = hashmapVocabulario.get(p);
+                            
                             if (palabra == null) {
-                                palabra = new Palabra(idPal, pal);
-                                idPal++;
-                                palsPendientesCreacion.add(palabra);
-                                vocabulario.put(palabra.getPalabra(), palabra);
+                                palabra = new Palabra(idPalabra, p);
+                                idPalabra++;
+                                listaPalabrasPendientesCreacion.add(palabra);
+                                hashmapVocabulario.put(palabra.getPalabra(), palabra);
                             }
 
-                            Posteo posteo = posteos.get(pal);
+                            Posteo posteo = hashmapPosteos.get(p);
+                            
                             if (posteo == null) {
-                                posteo = new Posteo(idPost, palabra, documento);
-                                idPost++;
-                                posteos.put(pal, posteo);
+                                posteo = new Posteo(idPosteo, palabra, documento);
+                                idPosteo++;
+                                hashmapPosteos.put(p, posteo);
                             }
 
                             posteo.increaseTf();
 
                             if (j % 10000 == 0) {
-                                System.out.println("Num aprox palabras indexadas: " + j.toString());
-                                Integer tamanoVoc = (Integer) vocabulario.size();
+                                System.out.println("Número aproximado de palabras indexadas: " + j.toString());
+                                Integer tamanoVoc = (Integer) hashmapVocabulario.size();
                                 System.out.println("-----------------------palabras distintas:" + tamanoVoc.toString());
                             }
 
                             j++;
                         }
-                        lineCount++;
+                        contadorLineas++;
                     }
-                    br.close();
-                    documento.setPrimerasLineas(primerasLineas);
-                    documento = documentoDao.create(documento);
                     
-                    archivoDao.create(new Archivo(documento.getIdDocumento(), FileToBase64.encodeFileToBase64(doc)));
-                    /* Para insertar un posteo en la DB, es necesario que la palabra
-                    y el documento que le corresponden ya se encuentren allí.
-                    Por eso, primero insertamos en la db todas las palabras
-                    nuevas, y recién luego insertamos los posteos.
+                    lector.close();
+                    documento.setPrimerasLineas(primerasLineas);
+                    documento = documentoDAO.create(documento);
+                    
+                    archivoDAO.create(new Archivo(documento.getIdDocumento(), FileToBase64.encodeFileToBase64(d)));
+                    
+                    /* Para insertar un posteo en la base de datos, es necesario que la palabra
+                     * y el documento que le corresponden ya se encuentren ahí.
+                     * Por eso, primero insertamos en la db todas las palabras nuevas, y recién
+                     * luego insertamos los posteos.
                      */
-                    //palabraDao.bulkCreate(palsPendientesCreacion);
+                    updatePalabras(hashmapPosteos);
 
-                    updatePalabras(vocabulario, posteos);
+                    persistirPosteos(hashmapPosteos);
 
-                    persistirPosteos(posteos);
-
-                    System.out.println("Se indexó el documento: " + doc.getName());
-                    cantIdx++;
+                    System.out.println("Se indexó el documento: " + d.getName());
+                    cantidadArchivosIndexados++;
                 }
+                
             }
-            persistirPalabras(vocabulario);
+            
+            persistirPalabras(hashmapVocabulario);
         }
 
-        System.out.println("----------------------------Proceso de indexación finalizado con éxito.");
-        return cantIdx;
+        System.out.println("Proceso de indexación finalizado con éxito.");
+        return cantidadArchivosIndexados;
     }
 
     private HashMap<String, Palabra> iniciarVocabulario() {
-        HashMap<String, Palabra> vocabulario = new HashMap(800000, 0.5f);
-        ArrayList<Palabra> queryPalabras = new ArrayList<Palabra>(palabraDao.findAll());
+        
+        HashMap<String, Palabra> hashmapVocabulario = new HashMap(800000, 0.5f);
+        
+        ArrayList<Palabra> queryPalabras = new ArrayList<Palabra>(palabraDAO.findAll());
         Integer queryLength = queryPalabras.size();
+        
         for (int i = 0; i < queryLength; i++) {
             String stringPalabra = queryPalabras.get(i).getPalabra();
             Palabra objetoPalabra = queryPalabras.get(i);
-            vocabulario.put(stringPalabra, objetoPalabra);
+            hashmapVocabulario.put(stringPalabra, objetoPalabra);
         }
 
-        return vocabulario;
+        return hashmapVocabulario;
+        
     }
 
     private HashMap<String, Documento> iniciarDocumentos() {
-        HashMap<String, Documento> documentos = new HashMap(800000, 0.5f);
-        ArrayList<Documento> queryDocu = new ArrayList<Documento>(documentoDao.findAll());
-        Integer queryLength = queryDocu.size();
-        queryDocu.forEach(doc -> {
-            documentos.put(doc.getNombreArchivo(), doc);
+        
+        HashMap<String, Documento> hashmapDocumentos = new HashMap(800000, 0.5f);
+        
+        ArrayList<Documento> queryDocumentos = new ArrayList<Documento>(documentoDAO.findAll());
+        
+        queryDocumentos.forEach(doc -> {
+            hashmapDocumentos.put(doc.getNombreArchivo(), doc);
         });
-        return documentos;
+        
+        return hashmapDocumentos;
+        
     }
 
-    private void updatePalabras(HashMap<String, Palabra> vocabulario,
-            HashMap<String, Posteo> posteos) {
-        Collection<Posteo> colPost = posteos.values();
-        colPost.forEach(posteo -> {
+    private void updatePalabras(HashMap<String, Posteo> hashmapPosteos) {
+        
+        Collection<Posteo> coleccionPosteos = hashmapPosteos.values();
+        
+        coleccionPosteos.forEach(posteo -> {
             Palabra palabra = posteo.getPalabra();
             palabra.increaseNr();
+            
             if (posteo.getTf() > palabra.getMaxtf()) {
                 palabra.setMaxtf(posteo.getTf());
             }
-        }); //palabraDao.bulkUpdate(arrayListPalabras);
+        });
+        
     }
 
-    private void persistirPosteos(HashMap<String, Posteo> posteos) {
-        Collection<Posteo> values = posteos.values();
+    private void persistirPosteos(HashMap<String, Posteo> hashmapPosteos) {
+        
+        Collection<Posteo> values = hashmapPosteos.values();
+        
         ArrayList<Posteo> valuesList = new ArrayList<Posteo>(values);
-        posteoDao.bulkCreate(valuesList);
+        posteoDAO.bulkCreate(valuesList);
+        
     }
 
-    private void persistirPalabras(HashMap<String, Palabra> vocabulario) {
-        palabraDao.deleteAll();
-        Collection<Palabra> values = vocabulario.values();
+    private void persistirPalabras(HashMap<String, Palabra> hashmapVocabulario) {
+        
+        palabraDAO.deleteAll();
+        
+        Collection<Palabra> values = hashmapVocabulario.values();
+        
         ArrayList<Palabra> valuesList = new ArrayList<Palabra>(values);
-        palabraDao.bulkCreate(valuesList);
+        palabraDAO.bulkCreate(valuesList);
 
     }
 }
