@@ -2,10 +2,10 @@ package DLC.TPI.DAO.Clases;
 
 import java.util.List;
 import DLC.TPI.Clases.Documento;
-import DLC.TPI.DAO.Commons.DAOEclipseLink;
+import DLC.TPI.DAO.Commons.OADEclipseLink;
 
 
-public class DocumentoOAD extends DAOEclipseLink<Documento, Integer> {
+public class DocumentoOAD extends OADEclipseLink<Documento, Integer> {
 
     public DocumentoOAD() {
         super(Documento.class);
