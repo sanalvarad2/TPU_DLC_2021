@@ -4,12 +4,12 @@ import java.util.List;
 import DLC.TPI.Clases.Documento;
 import DLC.TPI.Clases.Palabra;
 import DLC.TPI.Clases.Posteo;
-import DLC.TPI.DAO.Commons.OADEclipseLink;
+import DLC.TPI.DAO.Commons.DAOEclipseLink;
 
 
-public class PosteoOAD extends OADEclipseLink<Posteo, Integer> {
+public class PosteoDAO extends DAOEclipseLink<Posteo, Integer> {
     
-    public PosteoOAD() {
+    public PosteoDAO() {
         super(Posteo.class);
     }
     

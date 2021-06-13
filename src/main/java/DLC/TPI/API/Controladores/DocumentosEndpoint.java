@@ -9,12 +9,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import DLC.TPI.Clases.Documento;
-import DLC.TPI.DAO.Clases.DocumentoOAD;
+import DLC.TPI.DAO.Clases.DocumentoDAO;
 
 @Path("/documentos")
 public class DocumentosEndpoint {
     
-    @Inject private DocumentoOAD dao;
+    @Inject private DocumentoDAO dao;
     
     @GET
     @Path("/{codigo}")

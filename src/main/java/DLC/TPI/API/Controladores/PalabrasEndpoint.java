@@ -9,12 +9,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import DLC.TPI.Clases.Palabra;
-import DLC.TPI.DAO.Clases.PalabraOAD;
+import DLC.TPI.DAO.Clases.PalabraDAO;
 
 @Path("/palabras")
 public class PalabrasEndpoint {
     
-    @Inject private PalabraOAD dao;
+    @Inject private PalabraDAO dao;
     
     @GET
     @Path("/todas")

@@ -8,14 +8,14 @@ import javax.persistence.Query;
 import DLC.TPI.Excepciones.TechnicalException;
 
 
-public abstract class OADEclipseLink<E extends IDALEntity, K> implements IDAO<E, K> {
+public abstract class DAOEclipseLink<E extends IDALEntity, K> implements IDAO<E, K> {
     
     @Inject
     protected EntityManager entityManager;
     
     private final Class<E> entityClass;
     
-    public OADEclipseLink(Class<E> entityClass) {
+    public DAOEclipseLink(Class<E> entityClass) {
         this.entityClass = entityClass;
     }
     

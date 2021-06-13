@@ -9,12 +9,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import DLC.TPI.Clases.Posteo;
-import DLC.TPI.DAO.Clases.PosteoOAD;
+import DLC.TPI.DAO.Clases.PosteoDAO;
 
 @Path("/posteos")
 public class PosteosEndpoint {
     
-    @Inject private PosteoOAD dao;
+    @Inject private PosteoDAO dao;
     
     @GET
     @Path("/todos")

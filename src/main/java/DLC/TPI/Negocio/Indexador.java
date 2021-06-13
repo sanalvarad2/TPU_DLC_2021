@@ -16,16 +16,16 @@ import javax.inject.Inject;
 import DLC.TPI.Clases.Documento;
 import DLC.TPI.Clases.Palabra;
 import DLC.TPI.Clases.Posteo;
-import DLC.TPI.DAO.Clases.DocumentoOAD;
-import DLC.TPI.DAO.Clases.PalabraOAD;
-import DLC.TPI.DAO.Clases.PosteoOAD;
+import DLC.TPI.DAO.Clases.DocumentoDAO;
+import DLC.TPI.DAO.Clases.PalabraDAO;
+import DLC.TPI.DAO.Clases.PosteoDAO;
 
 
 public class Indexador {
     
-    @Inject private DocumentoOAD documentoDao;
-    @Inject private PalabraOAD palabraDao;
-    @Inject private PosteoOAD posteoDao;
+    @Inject private DocumentoDAO documentoDao;
+    @Inject private PalabraDAO palabraDao;
+    @Inject private PosteoDAO posteoDao;
     
     public static final String directorioDocumentos = "E:\\DocumentosTP1\\";
     public static final String directorioIndexados =  "E:\\Indexados\\";
