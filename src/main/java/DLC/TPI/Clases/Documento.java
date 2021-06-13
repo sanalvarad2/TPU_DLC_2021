@@ -27,9 +27,6 @@ public class Documento implements IDALEntity {
     @Column(unique = false, name = "primeras_lineas")
     private String primerasLineas;
     
-    @Column(unique = true, name = "path")
-    private String path;
-
     public Integer getIdDocumento() {
         return idDocumento;
     }
@@ -56,14 +53,6 @@ public class Documento implements IDALEntity {
 
     public void setPrimerasLineas(String primerasLineas) {
         this.primerasLineas = primerasLineas;
-    }
-    
-     public String getPath() {
-        return path;
-    }
- 
-    public void setPath(String path) {
-        this.path = path;
     }
 
     public Documento() {
