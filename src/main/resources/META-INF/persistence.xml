@@ -3,17 +3,17 @@
   <!-- Define Persistence Unit -->
   <persistence-unit name="tpudlc_persistencia" transaction-type="RESOURCE_LOCAL">
     <jta-data-source>dlcResourceLocal</jta-data-source>
-    <class>tpudlc.classes.Documento</class>
-    <class>tpudlc.classes.Palabra</class>
-    <class>tpudlc.classes.Posteo</class>
+    <class>DLC.TPI.Clases.Documento</class>
+    <class>DLC.TPI.Clases.Posteo</class>
+    <class>DLC.TPI.Clases.Palabra</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://127.0.0.1:5432/tpudlc?reWriteBatchedInserts=true"/>
-      <property name="javax.persistence.jdbc.user" value="root"/>
-      <property name="javax.persistence.jdbc.password" value="Appleip0d!"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://mypersonaldns.ddns.net:5432/tpudlc?reWriteBatchedInserts=true"/>
+      <property name="javax.persistence.jdbc.user" value="tpudlc"/>
+      <property name="javax.persistence.jdbc.password" value="DLC2021"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-      <property name="eclipselink.ddl-generation" value="create-tables" />
-      <property name="eclipselink.ddl-generation.output-mode" value="database" />
-      <property name="eclipselink.ddl-generation-mode" value="ddl_database_generation" />
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+      <property name="eclipselink.ddl-generation-mode" value="ddl_database_generation"/>
     </properties>
   </persistence-unit>
 </persistence>
