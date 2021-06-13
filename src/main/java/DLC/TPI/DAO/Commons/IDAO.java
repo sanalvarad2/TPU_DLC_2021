@@ -4,7 +4,7 @@ import java.util.List;
 
 
 
-public interface IDAO<E extends DALEntity,K> {
+public interface IDAO<E extends IDALEntity,K> {
     
     void update(E pData);
     

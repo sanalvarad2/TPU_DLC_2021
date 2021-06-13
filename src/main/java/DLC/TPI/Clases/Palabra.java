@@ -1,7 +1,7 @@
 package DLC.TPI.Clases;
 
 import javax.persistence.*;
-import DLC.TPI.DAO.Commons.DALEntity;
+import DLC.TPI.DAO.Commons.IDALEntity;
 
 @Entity
 @Table(name = "PALABRAS")
@@ -13,7 +13,7 @@ import DLC.TPI.DAO.Commons.DALEntity;
             @NamedQuery(name = "Palabra.findMaxId", query = "SELECT p FROM Palabra p ORDER BY p.idPalabra DESC")
         }
 )
-public class Palabra implements DALEntity {
+public class Palabra implements IDALEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

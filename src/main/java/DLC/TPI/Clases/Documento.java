@@ -1,7 +1,7 @@
 package DLC.TPI.Clases;
 
 import javax.persistence.*;
-import DLC.TPI.DAO.Commons.DALEntity;
+import DLC.TPI.DAO.Commons.IDALEntity;
 
 @Entity
 @Table(name = "DOCUMENTOS")
@@ -14,7 +14,7 @@ import DLC.TPI.DAO.Commons.DALEntity;
             @NamedQuery(name = "Documento.getCount", query = "SELECT COUNT(d) FROM Documento d")
         }
 )
-public class Documento implements DALEntity {
+public class Documento implements IDALEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

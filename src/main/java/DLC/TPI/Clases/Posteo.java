@@ -1,7 +1,7 @@
 package DLC.TPI.Clases;
 
 import javax.persistence.*;
-import DLC.TPI.DAO.Commons.DALEntity;
+import DLC.TPI.DAO.Commons.IDALEntity;
 
 @Entity
 @Table(name = "POSTEOS")
@@ -16,7 +16,7 @@ import DLC.TPI.DAO.Commons.DALEntity;
             @NamedQuery(name = "Posteo.findMaxId", query = "SELECT p FROM Posteo p ORDER BY p.idPosteo DESC")
         }
 )
-public class Posteo implements DALEntity {
+public class Posteo implements IDALEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

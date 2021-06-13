@@ -3,10 +3,10 @@ package DLC.TPI.DAO.Clases;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import DLC.TPI.Clases.Palabra;
-import DLC.TPI.DAO.Commons.DaoEclipseLink;
+import DLC.TPI.DAO.Commons.DAOEclipseLink;
 
 
-public class PalabraDAO extends DaoEclipseLink<Palabra, Integer> {
+public class PalabraDAO extends DAOEclipseLink<Palabra, Integer> {
     
     public PalabraDAO() {
         super(Palabra.class);
