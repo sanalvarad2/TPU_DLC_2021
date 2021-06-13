@@ -70,7 +70,7 @@ public class Indexador {
             for (File d : listaDocumentos) {
                 
                 System.gc();
-                System.out.println("----------------------------------Doc: " + d.getName());
+                System.out.println("Documento: " + d.getName());
                 
                 Documento documento = hashmapDocumentos.get(d.getName());
                 
@@ -128,7 +128,7 @@ public class Indexador {
                             if (j % 10000 == 0) {
                                 System.out.println("Número aproximado de palabras indexadas: " + j.toString());
                                 Integer tamanoVoc = (Integer) hashmapVocabulario.size();
-                                System.out.println("-----------------------palabras distintas:" + tamanoVoc.toString());
+                                System.out.println("Palabras distintas:" + tamanoVoc.toString());
                             }
 
                             j++;
