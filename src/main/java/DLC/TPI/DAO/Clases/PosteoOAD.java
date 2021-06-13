@@ -7,9 +7,9 @@ import DLC.TPI.Clases.Posteo;
 import DLC.TPI.DAO.Commons.DAOEclipseLink;
 
 
-public class PosteoDAO extends DAOEclipseLink<Posteo, Integer> {
+public class PosteoOAD extends DAOEclipseLink<Posteo, Integer> {
     
-    public PosteoDAO() {
+    public PosteoOAD() {
         super(Posteo.class);
     }
     

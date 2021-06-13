@@ -5,9 +5,9 @@ import DLC.TPI.Clases.Documento;
 import DLC.TPI.DAO.Commons.DAOEclipseLink;
 
 
-public class DocumentoDAO extends DAOEclipseLink<Documento, Integer> {
+public class DocumentoOAD extends DAOEclipseLink<Documento, Integer> {
 
-    public DocumentoDAO() {
+    public DocumentoOAD() {
         super(Documento.class);
     }
     

@@ -6,9 +6,9 @@ import DLC.TPI.Clases.Palabra;
 import DLC.TPI.DAO.Commons.DAOEclipseLink;
 
 
-public class PalabraDAO extends DAOEclipseLink<Palabra, Integer> {
+public class PalabraOAD extends DAOEclipseLink<Palabra, Integer> {
     
-    public PalabraDAO() {
+    public PalabraOAD() {
         super(Palabra.class);
     }
     
