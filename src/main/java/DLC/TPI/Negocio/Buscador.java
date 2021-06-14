@@ -34,7 +34,7 @@ public class Buscador {
         List<Documento> respuesta = new ArrayList();
 
         Pattern p = Pattern.compile("[a-zA-Z]+");
-        Matcher m = p.matcher(query);
+        Matcher m = p.matcher(query.toLowerCase());
         ArrayList<Palabra> listaPalabras = new ArrayList(10);
         
         while (m.find()) {
